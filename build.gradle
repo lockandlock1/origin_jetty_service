@@ -1,0 +1,36 @@
+plugins {
+    id 'java'
+}
+
+group 'com.kt.kice.exam'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    jettyVersion = '9.4.57.v20241219'
+    gsonVersion  = '2.10.1'
+    junitVersion = '5.10.2'
+}
+
+dependencies {
+
+    // Server 쪽이 이미 있다면 유지
+    implementation "org.eclipse.jetty:jetty-server:${jettyVersion}"
+    implementation "org.eclipse.jetty:jetty-servlet:${jettyVersion}"
+
+    // ★ 외부 API 호출용 Jetty Client
+    implementation "org.eclipse.jetty:jetty-client:${jettyVersion}"
+
+    implementation "com.google.code.gson:gson:${gsonVersion}"
+    compileOnly "javax.servlet:javax.servlet-api:3.1.0"
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+test {
+    useJUnitPlatform()
+}
