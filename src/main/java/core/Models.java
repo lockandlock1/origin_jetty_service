@@ -4,10 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,24 +23,38 @@ public class Models {
 
     private Models(Map<String, ModelInfo> byName) { this.byName = byName; }
 
-    public static Models load(String path) throws IOException {
-        try (Reader r = new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8)) {
+
+    public static Models load(String resourceName) throws IOException {
+        // 예: resourceName = "models.json" 또는 "config/models.json"
+        InputStream is = Models.class.getResourceAsStream("/" + resourceName);
+
+
+        try (Reader r = new InputStreamReader(is, StandardCharsets.UTF_8)) {
             JsonObject root = JsonParser.parseReader(r).getAsJsonObject();
+
             Map<String, ModelInfo> map = new HashMap<>();
-            for (JsonElement e : root.getAsJsonArray("models")) {
+            var modelsArr = root.getAsJsonArray("models");
+            if (modelsArr == null) throw new IOException("JSON key 'models' is missing or not an array");
+
+            for (JsonElement e : modelsArr) {
                 JsonObject m = e.getAsJsonObject();
                 String name = m.get("modelname").getAsString();
                 String url  = m.get("url").getAsString();
-                Map<String,String> codeMap = new HashMap<>();
-                for (JsonElement c : m.getAsJsonArray("classes")) {
-                    JsonObject co = c.getAsJsonObject();
-                    codeMap.put(co.get("code").getAsString(), co.get("value").getAsString());
+
+                Map<String, String> codeMap = new HashMap<>();
+                var classesArr = m.getAsJsonArray("classes");
+                if (classesArr != null) {
+                    for (JsonElement c : classesArr) {
+                        JsonObject co = c.getAsJsonObject();
+                        codeMap.put(co.get("code").getAsString(), co.get("value").getAsString());
+                    }
                 }
                 map.put(name, new ModelInfo(name, codeMap, url));
             }
             return new Models(map);
         }
     }
+
 
     public ModelInfo find(String name) { return byName.get(name); }
 }

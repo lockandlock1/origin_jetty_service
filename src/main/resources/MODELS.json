@@ -1,0 +1,32 @@
+{
+  "models": [
+    {
+      "modelname": "news-topic-classifier-v1",
+      "classes": [
+        { "code": "POL",  "value": "정치" },
+        { "code": "ECO",  "value": "경제" },
+        { "code": "SPO",  "value": "스포츠" },
+        { "code": "SCI",  "value": "과학" },
+        { "code": "CULT", "value": "문화" }
+      ],
+      "url": "https://api.example.com/infer/news-topic-classifier-v1"
+    },
+    {
+      "modelname": "sentiment-kr-v2",
+      "classes": [
+        { "code": "-1", "value": "부정" },
+        { "code": "0",  "value": "중립" },
+        { "code": "1",  "value": "긍정" }
+      ],
+      "url": "https://api.example.com/infer/sentiment-kr-v2"
+    },
+    {
+      "modelname": "spam-detector-v1",
+      "classes": [
+        { "code": "SPAM", "value": "스팸" },
+        { "code": "HAM",  "value": "정상" }
+      ],
+      "url": "https://api.example.com/infer/spam-detector-v1"
+    }
+  ]
+}
