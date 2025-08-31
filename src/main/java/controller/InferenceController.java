@@ -29,6 +29,8 @@ public class InferenceController extends HttpServlet {
         this.modelService = modelService;
     }
 
+
+//    PathVarialbe 예시
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String path = req.getPathInfo(); // "/42/rag/abc123"

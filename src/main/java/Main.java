@@ -1,4 +1,5 @@
 import controller.InferenceController;
+import controller.KeywordSearchController;
 import core.*;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
@@ -6,6 +7,7 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import service.ModelService;
 import service.PreprocessService;
+import service.SearchService;
 
 public class Main {
 
@@ -20,7 +22,14 @@ public class Main {
         ModelInvoker invoker = new ModelInvoker();
         ModelService modelService = new ModelService(models, invoker);
 
+
+
         InferenceController controller = new InferenceController(preprocessService, modelService);
+
+        ExternalApiClient client = new ExternalApiClient();
+        SearchService searchService = new SearchService(client);
+
+        KeywordSearchController keywordController = new KeywordSearchController(searchService);
 
         // Jetty 서버 (127.0.0.1:8080 바인딩)
         Server server = new Server();
@@ -32,6 +41,7 @@ public class Main {
         ServletContextHandler ctx = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
         ctx.setContextPath("/");
         ctx.addServlet(new ServletHolder(controller), "/"); // Controller 등록
+        ctx.addServlet(new ServletHolder(keywordController), "/api/v1/search/*");
         server.setHandler(ctx);
 
 //        ctx.setContextPath("/api/v1"); // 공통 prefix
