@@ -1,4 +1,4 @@
-package dto;
+package dto.kakao;
 
 import com.google.gson.annotations.SerializedName;
 

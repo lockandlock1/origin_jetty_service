@@ -23,12 +23,14 @@ dependencies {
 
     // ★ 외부 API 호출용 Jetty Client
     implementation "org.eclipse.jetty:jetty-client:${jettyVersion}"
-
+    implementation 'org.apache.commons:commons-csv:1.11.0'
     implementation "com.google.code.gson:gson:${gsonVersion}"
     compileOnly "javax.servlet:javax.servlet-api:3.1.0"
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+
+
 }
 
 test {

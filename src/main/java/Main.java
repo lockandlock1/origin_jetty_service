@@ -1,10 +1,12 @@
 import controller.InferenceController;
 import controller.KeywordSearchController;
+import controller.MockController;
 import core.*;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import service.MockService;
 import service.ModelService;
 import service.PreprocessService;
 import service.SearchService;
@@ -22,27 +24,34 @@ public class Main {
         ModelInvoker invoker = new ModelInvoker();
         ModelService modelService = new ModelService(models, invoker);
 
-
-
         InferenceController controller = new InferenceController(preprocessService, modelService);
 
-        ExternalApiClient client = new ExternalApiClient();
-        SearchService searchService = new SearchService(client);
+        try(ExternalApiClient client = new ExternalApiClient()) {
+            SearchService searchService = new SearchService(client);
 
-        KeywordSearchController keywordController = new KeywordSearchController(searchService);
+            KeywordSearchController keywordController = new KeywordSearchController(searchService);
 
-        // Jetty 서버 (127.0.0.1:8080 바인딩)
-        Server server = new Server();
-        ServerConnector http = new ServerConnector(server);
-        http.setHost("127.0.0.1");
-        http.setPort(8080);
-        server.setConnectors(new ServerConnector[]{http});
+            MockService mockService = new MockService(client);
+            MockController mockController = new MockController(mockService);
 
-        ServletContextHandler ctx = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
-        ctx.setContextPath("/");
-        ctx.addServlet(new ServletHolder(controller), "/"); // Controller 등록
-        ctx.addServlet(new ServletHolder(keywordController), "/api/v1/search/*");
-        server.setHandler(ctx);
+            // Jetty 서버 (127.0.0.1:8080 바인딩)
+            Server server = new Server();
+            ServerConnector http = new ServerConnector(server);
+            http.setHost("127.0.0.1");
+            http.setPort(8080);
+            server.setConnectors(new ServerConnector[]{http});
+
+            ServletContextHandler ctx = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
+            ctx.setContextPath("/");
+            ctx.addServlet(new ServletHolder(controller), "/"); // Controller 등록
+            ctx.addServlet(new ServletHolder(keywordController), "/api/v1/search/*");
+            ctx.addServlet(new ServletHolder(mockController), "/api/v1/mock/*");
+            server.setHandler(ctx);
+
+            // 3) Ctrl+C 등 종료 시 Jetty 먼저 멈추기
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                try { server.stop(); } catch (Exception ignored) {}
+            }));
 
 //        ctx.setContextPath("/api/v1"); // 공통 prefix
 //
@@ -57,8 +66,11 @@ public class Main {
 //        ctx.addServlet(new ServletHolder(new DeployController()),   "/api/v1/deploy/*");
 //        ctx.addServlet(new ServletHolder(new FineTuneController()), "/api/v1/fine-tune/*");
 
-        server.start();
-        server.join();
+            server.start();
+            server.join();
+        }
+
+
 
 
     }

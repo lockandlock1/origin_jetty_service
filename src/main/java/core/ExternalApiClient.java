@@ -2,6 +2,7 @@ package core;
 
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.ContentResponse;
+import org.eclipse.jetty.client.util.StringContentProvider;
 import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.http.HttpMethod;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
@@ -20,7 +21,7 @@ public class ExternalApiClient implements AutoCloseable {
         this.http.start();
     }
 
-//    KaKao Open API GET 호출
+    //    KaKao Open API GET 호출
     public String get(String url, Map<String, String> queryParameters) throws Exception {
         String requestUrl = buildUrl(url, queryParameters);
 
@@ -32,13 +33,6 @@ public class ExternalApiClient implements AutoCloseable {
         return res.getContentAsString();
     }
 
-    public String get(String url) throws Exception {
-        ContentResponse res = http.newRequest(url)
-                .method(HttpMethod.GET)
-                .header(HttpHeader.ACCEPT, "application/json")
-                .send();
-        return res.getContentAsString();
-    }
 
     private String buildUrl(String baseUrl, Map<String, String> params) {
         if (params == null || params.isEmpty()) return baseUrl;
@@ -57,21 +51,21 @@ public class ExternalApiClient implements AutoCloseable {
         return sb.toString();
     }
 
-//    public String postJson(String url, String json) throws Exception {
-//        ContentResponse res = http.newRequest(url)
-//                .method(HttpMethod.POST)
-//                .header(HttpHeader.CONTENT_TYPE, "application/json; charset=UTF-8")
-//                .header(HttpHeader.ACCEPT, "application/json")
-//                .content(new StringContentProvider("application/json; charset=UTF-8", json, StandardCharsets.UTF_8))
-//                .send();
-//        return res.getContentAsString();
-//    }
+    // 2) 객체 → JSON 직렬화 → POST
+    public String postJson(String url, String json) throws Exception {
+        ContentResponse res = http.newRequest(url)
+                .method(HttpMethod.POST)
+                .header(HttpHeader.CONTENT_TYPE, "application/json; charset=UTF-8")
+                .header(HttpHeader.ACCEPT, "application/json")
+                .content(new StringContentProvider("application/json; charset=UTF-8", json, java.nio.charset.StandardCharsets.UTF_8))
+                .send();
 
-//    public List<Model> getModels(Object payload) throws Exception {
-//        String raw = client.postJsonRaw(baseUrl + "/models", payload);
-//        Type t = new TypeToken<List<Model>>(){}.getType();
-//        return gson.fromJson(raw, t);
-//    }
+        int status = res.getStatus();
+        if (status < 200 || status >= 300) {
+            throw new IllegalStateException("HTTP " + status + ": " + res.getContentAsString());
+        }
+        return res.getContentAsString();
+    }
 
     @Override
     public void close() throws Exception {

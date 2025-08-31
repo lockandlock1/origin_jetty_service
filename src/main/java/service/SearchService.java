@@ -2,7 +2,6 @@ package service;
 
 import com.google.gson.Gson;
 import core.ExternalApiClient;
-import dto.SearchResponse;
 
 import java.util.Map;
 

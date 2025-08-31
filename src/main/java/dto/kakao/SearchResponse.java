@@ -1,4 +1,7 @@
-package dto;
+package dto.kakao;
+
+import dto.kakao.Document;
+import dto.kakao.Meta;
 
 import java.util.List;
 

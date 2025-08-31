@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import dto.ApiResponse;
-import dto.SearchResponse;
 import service.SearchService;
 
 import javax.servlet.ServletException;
@@ -37,7 +36,7 @@ public class KeywordSearchController extends HttpServlet {
 //            resp.setContentType("application/json; charset=UTF-8");
 //            resp.getWriter().write(raw);
 
-//            pojo 필요시
+//            pojo 필요시 -> 응답 객체를 다뤄야 한다면
 //            SearchResponse data = gson.fromJson(raw, SearchResponse.class);
 //// 가공/검증/필터링이 필요할 때만 POJO 사용
 //            writeJson(resp, 200, ApiResponse.success(data));
