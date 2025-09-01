@@ -1,7 +1,7 @@
-package dto.kakao;
+package domain.kakao.dto;
 
-import dto.kakao.Document;
-import dto.kakao.Meta;
+import domain.kakao.Document;
+import domain.kakao.Meta;
 
 import java.util.List;
 

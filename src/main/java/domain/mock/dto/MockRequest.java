@@ -1,4 +1,7 @@
-package dto.mock;
+package domain.mock.dto;
+
+import domain.mock.LexicalFilter;
+import domain.mock.Query;
 
 import java.util.List;
 

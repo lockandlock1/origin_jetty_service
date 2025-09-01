@@ -17,7 +17,9 @@ public class StopWords {
             String line;
             while ((line = br.readLine()) != null) {
                 line = line.trim();
-                if (!line.isEmpty()) s.add(line);
+                if (!line.isEmpty()) {
+                    s.add(line);
+                }
             }
         }
         return new StopWords(s);

@@ -2,7 +2,7 @@ package controller;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import dto.ApiRequest;
+import domain.kice.ApiRequest;
 import service.ModelService;
 import service.PreprocessService;
 import util.PathVars;

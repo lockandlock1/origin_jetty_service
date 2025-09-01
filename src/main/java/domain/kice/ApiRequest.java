@@ -1,4 +1,4 @@
-package dto;
+package domain.kice;
 
 import java.util.List;
 

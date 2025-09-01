@@ -1,4 +1,6 @@
-package dto.mock;
+package domain.mock.dto;
+
+import domain.mock.Message;
 
 import java.util.List;
 

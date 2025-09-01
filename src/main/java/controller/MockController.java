@@ -1,9 +1,9 @@
 package controller;
 
 import com.google.gson.Gson;
-import dto.ApiResponse;
-import dto.mock.MockRequest;
-import dto.mock.MockResponse;
+import domain.common.ApiResponse;
+import domain.mock.dto.MockRequest;
+import domain.mock.dto.MockResponse;
 import service.MockService;
 
 import javax.servlet.ServletException;

@@ -1,4 +1,4 @@
-package dto;
+package domain.common;
 
 public class ApiResponse<T> {
     private String code;

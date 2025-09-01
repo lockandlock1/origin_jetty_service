@@ -1,4 +1,4 @@
-package dto.kakao;
+package domain.kakao.dto;
 
 public class SearchRequest {
 }

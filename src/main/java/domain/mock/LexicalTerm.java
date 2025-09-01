@@ -1,4 +1,4 @@
-package dto.mock;
+package domain.mock;
 
 public class LexicalTerm {
 

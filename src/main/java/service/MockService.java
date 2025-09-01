@@ -2,7 +2,7 @@ package service;
 
 import com.google.gson.Gson;
 import core.ExternalApiClient;
-import dto.mock.MockRequest;
+import domain.mock.dto.MockRequest;
 
 public class MockService {
 
