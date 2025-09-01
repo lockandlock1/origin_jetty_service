@@ -12,13 +12,17 @@ import service.ModelService;
 import service.PreprocessService;
 import service.SearchService;
 
+import java.nio.file.Paths;
+
 public class Main {
 
     public static void main(String[] args) throws Exception{
         // 사전 / 불용어 / 모델 목록 로드
+        System.out.println("CWD = " + Paths.get(".").toAbsolutePath());
+        System.out.println("Looking for = " + Paths.get("DICTIONARY.txt").toAbsolutePath());
         Dictionary dict = Dictionary.load("DICTIONARY.txt");
-        StopWords stop = StopWords.load("./STOPWORD.txt");
-        Models models = Models.load("./MODELS.json");
+        StopWords stop = StopWords.load("STOPWORD.txt");
+        Models models = Models.load("MODELS.json");
 
         Db.init();
 
