@@ -29,7 +29,16 @@ public class KeywordSearchController extends HttpServlet {
         try {
             search = searchService.search(query);
 
-            // 가장 단순
+//            // 전부 완료된 뒤 후속 로직 실행
+//            searchService.searchAllAsync(queries)
+//                    .thenAccept(results -> {
+//                        System.out.println("모든 호출 완료: " + results.size() + "건");
+//                        // TODO: 여기서 결과 파싱/집계 등 다음 로직 수행
+//                    })
+//                    .join(); // (필요 시) 메인 스레드에서 끝날 때까지 대기
+
+
+            // 가장 단순 응답
 
 //            String raw = client.get(kakaoUrl, Map.of("query", query));
 //            resp.setStatus(200);
