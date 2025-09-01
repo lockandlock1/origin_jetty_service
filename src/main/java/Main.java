@@ -2,6 +2,7 @@ import controller.InferenceController;
 import controller.KeywordSearchController;
 import controller.MockController;
 import core.*;
+import infra.db.Db;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -18,6 +19,8 @@ public class Main {
         Dictionary dict = Dictionary.load("DICTIONARY.txt");
         StopWords stop = StopWords.load("./STOPWORD.txt");
         Models models = Models.load("./MODELS.json");
+
+        Db.init();
 
         Preprocessor preprocessor = new Preprocessor(dict, stop);
         PreprocessService preprocessService = new PreprocessService(preprocessor);
